@@ -8,20 +8,22 @@ var TICK_LENGTH = 20;
 // This constant is the amount of total ticks on each axis. It can be increased by two at times, if
 // the endpoints aren't naturally drawn. See above.
 var RESOLUTION = 20;
-function getColor(x, y, angle)
-{// This works, but the colors always come out black. I should fix that. 
-var width = $("#field").width();var height = $("#field").height();
-    // var red = (x/width)*255;
-    // var green = (y/height)*255;
-    // var blue = (angle/90)*255;
-    var red = 255;
-    var green =0;
-    var blue = 0;
-    console.log("rgb("+red.toString()+","+green.toString()+","+blue.toString()+")");
-    return "rgb("+red.toString()+","+green.toString()+","+blue.toString()+")";
+
+function getColor(x, y, angle) { // This works, but the colors always come out black. I should fix that.
+  var width = $("#field").width();
+  var height = $("#field").height();
+  // var red = (x/width)*255;
+  // var green = (y/height)*255;
+  // var blue = (angle/90)*255;
+  var red = 255;
+  var green = 0;
+  var blue = 0;
+  console.log("rgb(" + red.toString() + "," + green.toString() + "," + blue.toString() + ")");
+  return "rgb(" + red.toString() + "," + green.toString() + "," + blue.toString() + ")";
 
 
 }
+
 function drawLine(canvas, x1, y1, x2, y2) {
   var STROKE_WIDTH = 2;
   var STROKE_STYLE = "black";
@@ -228,7 +230,9 @@ function drawGrid(canvas, minX, maxX, minY, maxY, resolution, eqn) {
   for (var i = 0; i < fieldCoords.x.length; i++) {
     var x = graphCoords.x[i];
     var xCoord = fieldCoords.x[i];
-    for (var j = 0; j < fieldCoords.y.length; j++) {var y = graphCoords.y[j];  var values = {
+    for (var j = 0; j < fieldCoords.y.length; j++) {
+      var y = graphCoords.y[j];
+      var values = {
         e: Math.E,
         x: x,
         y: y
