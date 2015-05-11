@@ -5,6 +5,23 @@ var HORIZONTAL = 0;
 var PI_REPLACEMENT = "p";
 var TICK_LENGTH = 20;
 
+// This constant is the amount of total ticks on each axis. It can be increased by two at times, if
+// the endpoints aren't naturally drawn. See above.
+var RESOLUTION = 20;
+function getColor(x, y, angle)
+{// This works, but the colors always come out black. I should fix that. 
+var width = $("#field").width();var height = $("#field").height();
+    // var red = (x/width)*255;
+    // var green = (y/height)*255;
+    // var blue = (angle/90)*255;
+    var red = 255;
+    var green =0;
+    var blue = 0;
+    console.log("rgb("+red.toString()+","+green.toString()+","+blue.toString()+")");
+    return "rgb("+red.toString()+","+green.toString()+","+blue.toString()+")";
+
+
+}
 function drawLine(canvas, x1, y1, x2, y2) {
   var STROKE_WIDTH = 2;
   var STROKE_STYLE = "black";
@@ -43,21 +60,21 @@ function drawTick(canvas, x, y, len, dir) {
 }
 
 function drawText(canvas, x, y, text) {
-  var STROKE_WIDTH = 2;
-  var STROKE_STYLE = "black";
-  var FILL_STYLE = "black";
-  var FONT_SIZE = 8;
-  var FONT_FAMILY = "Verdana, Geneva, sans-serif";
-  canvas.drawText({
-    fillStyle: FILL_STYLE,
-    strokeStyle: STROKE_STYLE,
-    strokeWidth: STROKE_WIDTH,
-    fontFamily: FONT_FAMILY,
-    fontSize: FONT_SIZE,
-    text: text,
-    x: x,
-    y: y
-  });
+  // var STROKE_WIDTH = 2;
+  // var STROKE_STYLE = "black";
+  // var FILL_STYLE = "black";
+  // var FONT_SIZE = 8;
+  // var FONT_FAMILY = "Verdana, Geneva, sans-serif";
+  // canvas.drawText({
+  //   fillStyle: FILL_STYLE,
+  //   strokeStyle: STROKE_STYLE,
+  //   strokeWidth: STROKE_WIDTH,
+  //   fontFamily: FONT_FAMILY,
+  //   fontSize: FONT_SIZE,
+  //   text: text,
+  //   x: x,
+  //   y: y
+  // });
 }
 
 function drawGrid(canvas, minX, maxX, minY, maxY, resolution, eqn) {
@@ -211,40 +228,38 @@ function drawGrid(canvas, minX, maxX, minY, maxY, resolution, eqn) {
   for (var i = 0; i < fieldCoords.x.length; i++) {
     var x = graphCoords.x[i];
     var xCoord = fieldCoords.x[i];
-    for (var j = 0; j < fieldCoords.y.length; j++) {
-      var y = graphCoords.y[j];
-      var yCoord = fieldCoords.y[j];
-      var values = {
+    for (var j = 0; j < fieldCoords.y.length; j++) {var y = graphCoords.y[j];  var values = {
         e: Math.E,
         x: x,
         y: y
       };
+
+      var yCoord = fieldCoords.y[j];
+      var angle = 90 - (Math.atan(eqn.eval(values)) * (180 / Math.PI));
+      var color = getColor(xCoord, yCoord, angle);
       // Javascript, I hate you.
       values[PI_REPLACEMENT] = Math.PI;
 
       canvas.drawVector({
         strokeWidth: SLOPE_STROKE_WIDTH,
-        strokeStyle: SLOPE_STROKE_STYLE,
+        strokeStyle: color,
         x: xCoord,
         y: yCoord,
-        a1: 90 - (Math.atan(eqn.eval(values)) * (180 / Math.PI)),
+        a1: angle,
         l1: TICK_LENGTH / 2
       });
       canvas.drawVector({
         strokeWidth: SLOPE_STROKE_WIDTH,
-        strokeStyle: SLOPE_STROKE_STYLE,
+        strokeStyle: color,
         x: xCoord,
         y: yCoord,
-        a1: 90 - (Math.atan(eqn.eval(values)) * (180 / Math.PI)),
+        a1: angle,
         l1: -1 * TICK_LENGTH / 2
       });
     }
   }
 }
 $(document).ready(function() {
-  // This constant is the amount of total ticks on each axis. It can be increased by two at times, if
-  // the endpoints aren't naturally drawn. See above.
-  var RESOLUTION = 20;
   // These regexes are used to put in asterisks where they are necessary. I loop through them before I let
   // mathjs process the equation input. They must have two parenthetical groups that should have an asterisk
   // put in between them if found, because that's what the for loop expects. They also must be added to REGEXES
@@ -269,7 +284,7 @@ $(document).ready(function() {
     var maxY = parseInt($("#maxy").val());
     var minX = parseInt($("#minx").val());
     var minY = parseInt($("#miny").val());
-    // Input checking... 
+    // Input checking...
     if (minX >= maxX) {
       alert("The minimum X must be less than the maximum X");
       return;
