@@ -108,4 +108,5 @@ $(document).ready(function() {
     $("#equation").val($(this).html());
     $("#draw").click();
   });
+  $("#draw").click();
 });
