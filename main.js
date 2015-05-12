@@ -9,18 +9,17 @@ var TICK_LENGTH = 20;
 // the endpoints aren't naturally drawn. See above.
 var RESOLUTION = 20;
 
-function getColor(x, y, angle) { // This works, but the colors always come out black. I should fix that.
-  var width = $("#field").width();
-  var height = $("#field").height();
+function getColor(x, y, angle, width, height) { // This works, but the colors always come out black. I should fix that.
+  // var width = $("#field").width();
+  // var height = $("#field").height();
   // var red = Math.abs(Math.sin(angle * (Math.PI / 180)) * 255);
   // var green = Math.abs(Math.cos(angle * (Math.PI / 180)) * 255);
   // var blue = (angle / 90) * 255;
   var red = 255;
   var green = 0;
   var blue = 0;
-  // console.log("rgb(" + red.toString() + "," + green.toString() + "," + blue.toString() + ")");
-  // return "rgb(" + red.toString() + "," + green.toString() + "," + blue.toString() + ")";
-  return [red, green, blue];
+  var alpha = 125;
+  return [red, green, blue, alpha];
 }
 
 function drawLine(canvas, x1, y1, x2, y2) {
@@ -85,31 +84,29 @@ function drawPixel(canvas, minX, maxX, minY, maxY, eqn) {
   // I can't find a way to get it to put it on the screen, or even to do it
   // at the console.
   var AMOUNT_OF_COLOR_DATA = 4;
-  var xRatio = (maxX - minX)/canvas.width();
-  var yRatio =(maxY - minY)/canvas.height();
+  var height = canvas.height();
+  var width = canvas.width();
+  var xRatio = (maxX - minX) / width;
+  var yRatio = (maxY - minY) / height;
   var htmlCanvas = document.getElementById("field");
   var ctx = htmlCanvas.getContext('2d');
   var data = ctx.createImageData(htmlCanvas.width, htmlCanvas.height);
-  // for (var x = 0; x < htmlCanvas.width; x++) {
-  //   for (var y = 0; y < htmlCanvas.height; y++) {
-      // var currIndex = 4 * (x * y + x);
-      // var values = {
-      //   x: (x-canvas.width()/2) * xRatio,
-      //   y: (y-canvas.height()/2) * yRatio,
-      //   e: Math.E,
-      // };
-      // values[PI_REPLACEMENT] = Math.PI;
-      // var currentColor = getColor(x * xRatio, y * yRatio, eqn.eval(values));
-      // for (var i = 0; i < AMOUNT_OF_COLOR_DATA; i++) {
-      //   data.data[currIndex + i] = currentColor[i];
-      // }
-      for(var i = 0;i<data.data.length;i++)
-      {
-        data.data[i] = 255;
+  for (var x = 0; x < width; x++) {
+    for (var y = 0; y < height; y++) {
+      var currIndex = y * (width * 4) + (x * 4);
+      // console.log(currIndex);
+      var values = {
+        x: (x - width / 2) * xRatio,
+        y: (y - height / 2) * yRatio,
+        e: Math.E,
+      };
+      values[PI_REPLACEMENT] = Math.PI;
+      var currentColor = getColor(x * xRatio, y * yRatio, eqn.eval(values), width, height);
+      for (var i = 0; i < AMOUNT_OF_COLOR_DATA; i++) {
+        data.data[currIndex + i] = currentColor[i];
       }
-    // }
-  // }
-  console.log(data);
+    }
+  }
   ctx.putImageData(data, 0, 0);
 }
 
