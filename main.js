@@ -9,15 +9,10 @@ var TICK_LENGTH = 20;
 // the endpoints aren't naturally drawn. See above.
 var RESOLUTION = 20;
 
-function getColor(x, y, angle, width, height) { // This works, but the colors always come out black. I should fix that.
-  // var width = $("#field").width();
-  // var height = $("#field").height();
-  // var red = Math.abs(Math.sin(angle * (Math.PI / 180)) * 255);
-  // var green = Math.abs(Math.cos(angle * (Math.PI / 180)) * 255);
-  // var blue = (angle / 90) * 255;
-  var red = 255;
-  var green = 0;
-  var blue = 0;
+function getColor(x, y, angle, width, height) {
+  var red = Math.abs(Math.sin(angle) * 255);
+  var green = Math.abs(Math.cos(angle) * 255);
+  var blue = (angle / 90) * 255;
   var alpha = 125;
   return [red, green, blue, alpha];
 }
@@ -309,16 +304,16 @@ $(document).ready(function() {
   var jcanvas = $("#field");
   var canvas = document.getElementById("field");
   canvas.height = $(window).height() * 0.8;
-  canvas.width = $(window).width() * 0.5;
+  canvas.width = $(window).width() * 0.8;
   // These draw default lines. They get erased as soon as you click draw, but they make it clear what's going
   // on at first glance, so I have them here.
   drawLine(jcanvas, 0, canvas.height / 2 - 10, canvas.width - 20, canvas.height / 2 - 10);
   drawLine(jcanvas, canvas.width / 2 - 10, 0, canvas.width / 2 - 10, canvas.height - 20);
   $("#draw").click(function() {
-    var maxX = parseInt($("#maxx").val());
-    var maxY = parseInt($("#maxy").val());
-    var minX = parseInt($("#minx").val());
-    var minY = parseInt($("#miny").val());
+    var maxX = 10;
+    var maxY = 10;
+    var minX = -10;
+    var minY = -10;
     // Input checking...
     if (minX >= maxX) {
       alert("The minimum X must be less than the maximum X");
