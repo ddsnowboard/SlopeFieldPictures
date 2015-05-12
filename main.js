@@ -12,16 +12,15 @@ var RESOLUTION = 20;
 function getColor(x, y, angle) { // This works, but the colors always come out black. I should fix that.
   var width = $("#field").width();
   var height = $("#field").height();
-  // var red = (x/width)*255;
-  // var green = (y/height)*255;
-  // var blue = (angle/90)*255;
+  // var red = Math.abs(Math.sin(angle * (Math.PI / 180)) * 255);
+  // var green = Math.abs(Math.cos(angle * (Math.PI / 180)) * 255);
+  // var blue = (angle / 90) * 255;
   var red = 255;
   var green = 0;
   var blue = 0;
-  console.log("rgb(" + red.toString() + "," + green.toString() + "," + blue.toString() + ")");
-  return "rgb(" + red.toString() + "," + green.toString() + "," + blue.toString() + ")";
-
-
+  // console.log("rgb(" + red.toString() + "," + green.toString() + "," + blue.toString() + ")");
+  // return "rgb(" + red.toString() + "," + green.toString() + "," + blue.toString() + ")";
+  return [red, green, blue];
 }
 
 function drawLine(canvas, x1, y1, x2, y2) {
@@ -77,6 +76,39 @@ function drawText(canvas, x, y, text) {
   //   x: x,
   //   y: y
   // });
+}
+
+function drawPixel(canvas, minX, maxX, minY, maxY, eqn) {
+  // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Pixel_manipulation_with_canvas
+  // For some reason, this function isn't painting the thing it makes to the
+  // canvas. I am pretty sure that it is putting out the right thing, but
+  // I can't find a way to get it to put it on the screen, or even to do it
+  // at the console. 
+  var AMOUNT_OF_COLOR_DATA = 4;
+  var xRatio = canvas.width() / (maxX - minX);
+  var yRatio = canvas.height() / (maxY - minY);
+  var htmlCanvas = document.getElementById("field");
+  var ctx = htmlCanvas.getContext('2d');
+  var data = ctx.createImageData(ctx.getImageData(0, 0, htmlCanvas.width, htmlCanvas.height));
+  console.log(data);
+  for (var x = 0; x < htmlCanvas.width; x++) {
+    console.log(x);
+    for (var y = 0; y < htmlCanvas.height; y++) {
+      var currIndex = 4 * (x * y + x);
+      var values = {
+        x: x * xRatio,
+        y: y * yRatio,
+        e: Math.E,
+      };
+      values[PI_REPLACEMENT] = Math.PI;
+      var currentColor = getColor(x * xRatio, y * yRatio, eqn.eval(values));
+      for (var i = 0; i < AMOUNT_OF_COLOR_DATA; i++) {
+        data.data[currIndex + i] = currentColor[i];
+      }
+    }
+  }
+  console.log(data.data);
+  ctx.putImageData(data, 0, 0);
 }
 
 function drawGrid(canvas, minX, maxX, minY, maxY, resolution, eqn) {
@@ -305,7 +337,7 @@ $(document).ready(function() {
       }
     }
     eqn = math.compile(eqn);
-    drawGrid(jcanvas, minX, maxX, minY, maxY, RESOLUTION, eqn);
+    drawPixel(jcanvas, minX, maxX, minY, maxY, eqn);
   });
   $(document).keydown(function(event) {
     if (event.which === 13) {
