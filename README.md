@@ -1,2 +1,2 @@
-# SlopeFieldsWeb
-Creates a slope field in the browser
+# SlopeFieldPictures
+Draws an image based on a slope field in the browser. 
