@@ -3,9 +3,11 @@ var MAXX = 10;
 var MAXY = 10;
 var MINX = -10;
 var MINY = -10;
+var height = 0;
+var width = 0;
 
 
-function getColor(x, y, angle, width, height) {
+function getColor(x, y, angle) {
   var red = Math.abs(Math.sin(angle) * 255);
   var green = Math.abs(Math.cos(angle) * 255);
   var blue = Math.abs((x / MAXX)) * 135;
@@ -51,7 +53,7 @@ function drawPixel(canvas, MINX, MAXX, MINY, MAXY, eqn) {
         e: Math.E,
       };
       values[PI_REPLACEMENT] = Math.PI;
-      var currentColor = getColor(x * xRatio, y * yRatio, eqn.eval(values), width, height);
+      var currentColor = getColor(x * xRatio, y * yRatio, eqn.eval(values));
       for (var i = 0; i < AMOUNT_OF_COLOR_DATA; i++) {
         data.data[currIndex + i] = currentColor[i];
       }
@@ -74,8 +76,10 @@ $(document).ready(function() {
   // or jcanvas to my knowledge.
   var jcanvas = $("#field");
   var canvas = document.getElementById("field");
-  canvas.height = $(window).height() * 0.8;
+  canvas.height = $(window).height() * 0.7;
   canvas.width = $(window).width() * 0.8;
+  height = canvas.height;
+  width = canvas.width;
   // These draw default lines. They get erased as soon as you click draw, but they make it clear what's going
   // on at first glance, so I have them here.
   drawLine(jcanvas, 0, canvas.height / 2 - 10, canvas.width - 20, canvas.height / 2 - 10);
