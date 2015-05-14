@@ -3,8 +3,8 @@ var MAXX = 10;
 var MAXY = 10;
 var MINX = -10;
 var MINY = -10;
-var height = 0;
-var width = 0;
+var height = -1;
+var width = -1;
 
 
 function getColor(x, y, angle) {
@@ -15,26 +15,7 @@ function getColor(x, y, angle) {
   return [red, green, blue, alpha];
 }
 
-function drawLine(canvas, x1, y1, x2, y2) {
-  var STROKE_WIDTH = 2;
-  var STROKE_STYLE = "black";
-  canvas.drawLine({
-    strokeStyle: STROKE_STYLE,
-    strokeWidth: STROKE_WIDTH,
-    x1: x1,
-    y1: y1,
-    x2: x2,
-    y2: y2
-  });
-}
-
 function drawPixel(canvas, MINX, MAXX, MINY, MAXY, eqn) {
-  // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Pixel_manipulation_with_canvas
-  // For some reason, this function isn't painting the thing it makes to the
-  // canvas. I am pretty sure that it is putting out the right thing, but
-  // I can't find a way to get it to put it on the screen, or even to do it
-  // at the console.
-  // FIXED: Alpha...
   var AMOUNT_OF_COLOR_DATA = 4;
   var height = canvas.height();
   var width = canvas.width();
@@ -46,7 +27,6 @@ function drawPixel(canvas, MINX, MAXX, MINY, MAXY, eqn) {
   for (var x = 0; x < width; x++) {
     for (var y = 0; y < height; y++) {
       var currIndex = y * (width * 4) + (x * 4);
-      // console.log(currIndex);
       var values = {
         x: (x - width / 2) * xRatio,
         y: (y - height / 2) * yRatio,
@@ -64,7 +44,7 @@ function drawPixel(canvas, MINX, MAXX, MINY, MAXY, eqn) {
 
 $(document).ready(function() {
   // These regexes are used to put in asterisks where they are necessary. I loop through them before I let
-  // mathjs process the equation input. They must have two parenthetical groups that should have an asterisk
+  // math.js process the equation input. They must have two parenthetical groups that should have an asterisk
   // put in between them if found, because that's what the for loop expects. They also must be added to REGEXES
   // unless you make other arrangements for handling them.
   var TWO_LETTERS = /([A-Za-z)])([(A-Za-z])/;
