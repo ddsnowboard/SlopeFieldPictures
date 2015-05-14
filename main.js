@@ -60,10 +60,6 @@ $(document).ready(function() {
   canvas.width = $(window).width() * 0.8;
   height = canvas.height;
   width = canvas.width;
-  // These draw default lines. They get erased as soon as you click draw, but they make it clear what's going
-  // on at first glance, so I have them here.
-  drawLine(jcanvas, 0, canvas.height / 2 - 10, canvas.width - 20, canvas.height / 2 - 10);
-  drawLine(jcanvas, canvas.width / 2 - 10, 0, canvas.width / 2 - 10, canvas.height - 20);
   $("#draw").click(function() {
     jcanvas.clearCanvas();
     var eqn = $("#equation").val().replace("π", PI_REPLACEMENT);
