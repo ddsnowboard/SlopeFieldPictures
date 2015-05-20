@@ -19,7 +19,8 @@ function getColor(x, y, angle) {
 
 function drawPixel(canvas, MINX, MAXX, MINY, MAXY, eqn) {
   var AMOUNT_OF_COLOR_DATA = 4;
-  // Ticks per pixel.
+  // Ticks per pixel. Multiply this by the amount of pixels elapsed on the given
+  // direction and you'll get the amount of ticks elapsed in that distance.
   var xRatio = (MAXX - MINX) / width;
   var yRatio = (MAXY - MINY) / height;
   var ctx = canvas.getContext('2d');
@@ -27,15 +28,22 @@ function drawPixel(canvas, MINX, MAXX, MINY, MAXY, eqn) {
   for (var x = 0; x < width; x++) {
     for (var y = 0; y < height; y++) {
       // The imagedata data is just a one dimensional array, with each color for
-      // each pixel in order; it goes red, green, blue, alpha for pixel 1, red, green,
-      // blue, alpha for pixel 2, etc. It's a little silly. I would have liked
-      // a 2 dimensional array or something like that, but so it goes.
+      // each pixel in order; it goes red, green, blue, alpha for pixel 1, red,
+      // green, blue, alpha for pixel 2, etc. It's a little silly. I would have
+      // liked a 2 dimensional array or something like that, but so it goes.
+      // Anyway, this gets the index of the red component for the given pixel
+      // and then I can add some number to get the next ones.
       var currIndex = y * (width * 4) + (x * 4);
       var values = {
         x: (x - width / 2) * xRatio,
         y: (y - height / 2) * yRatio,
         e: Math.E,
       };
+      // JavaScript 101: If you use dot notation or JSON notation for an
+      // object, the name is a symbol in itself. If you use bracket notation,
+      // it's a string, so I can name this attribute with a constant and its
+      // name will be the string behind the constant, not "PI_REPLACEMENT"
+      // itself.
       values[PI_REPLACEMENT] = Math.PI;
       var currentColor = getColor(x * xRatio, y * yRatio, eqn.eval(values));
       // This for-loop puts the color from getColor() into the image data.
