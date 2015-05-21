@@ -17,7 +17,7 @@ function getColor(x, y, angle) {
   return [red, green, blue, alpha];
 }
 
-function drawPixel(canvas, MINX, MAXX, MINY, MAXY, eqn) {
+function drawPixel(MINX, MAXX, MINY, MAXY, eqn) {
   var AMOUNT_OF_COLOR_DATA = 4;
   // Ticks per pixel. Multiply this by the amount of pixels elapsed on the given
   // direction and you'll get the amount of ticks elapsed in that distance.
@@ -55,7 +55,15 @@ function drawPixel(canvas, MINX, MAXX, MINY, MAXY, eqn) {
   ctx.putImageData(data, 0, 0);
 }
 
-$(document).ready(function() {
+$(document).ready(function() {// These four lines pick up the variables declared at the very top. If
+  // I was interested in breaking the rules and giving JSHint a heart attack,
+  // I could just never declare them with `var` and instead just talk about them
+  // out of the blue. Little known fact, that. Hopefully.
+  canvas = document.getElementById("field");
+  canvas.height = $(window).height() * 0.7;
+  canvas.width = $(window).width() * 0.8;
+  height = canvas.height;
+  width = canvas.width;
   // These regexes are used to put in asterisks where they are necessary. I loop
   // through them before I let math.js process the equation input. Each of these
   // regexes must have two parenthetical groups that need an asterisk put in
@@ -71,15 +79,6 @@ $(document).ready(function() {
   // setting the height and width because it's almost impossible to do with jquery
   // or jcanvas to my knowledge.
   var jcanvas = $("#field");
-  // These four lines pick up the variables declared at the very top. If
-  // I was interested in breaking the rules and giving JSHint a heart attack,
-  // I could just never declare them with `var` and instead just talk about them
-  // out of the blue. Little known fact, that. Hopefully.
-  canvas = document.getElementById("field");
-  canvas.height = $(window).height() * 0.7;
-  canvas.width = $(window).width() * 0.8;
-  height = canvas.height;
-  width = canvas.width;
   $("#draw").click(function() {
     jcanvas.clearCanvas();
     // Math.js doesn't like unicode, so I have to replace π with something else.
@@ -93,7 +92,7 @@ $(document).ready(function() {
       }
     }
     eqn = math.compile(eqn);
-    drawPixel(jcanvas, MINX, MAXX, MINY, MAXY, eqn);
+    drawPixel(MINX, MAXX, MINY, MAXY, eqn);
   });
 
   // Map enter key to the "draw" button.
