@@ -10,10 +10,13 @@ var width = -1;
 var canvas = 0;
 
 function getColor(x, y, angle) {
-  var red = Math.abs(Math.sin(angle)) * 255;
-  var green = Math.abs(Math.cos(angle)) * 255;
-  var blue = Math.abs((x / MAXX)) * 135;
-  var alpha = Math.abs((y / MAXY)) * 255;
+  var red = (Math.abs(Math.sin(angle)) * 255);
+  var blue = (Math.abs(Math.cos(angle)) * 255);
+  var green = (Math.abs(Math.atan(angle)) * 255);
+  var alpha = (Math.abs(Math.tan(angle)) * 255);
+  //var green = 220 +(Math.abs(Math.cos(angle)) * 100);
+  //var blue = 100 +(Math.abs((x / MAXX)) * 150);
+  //var alpha = 255;//var alpha = Math.abs((y / MAXY)) * 255;
   return [red, green, blue, alpha];
 }
 
@@ -72,8 +75,8 @@ $(document).ready(function() {// These four lines pick up the variables declared
   // completely new, although it's worth noting that special cases aren't
   // special enough to break the rules.
   var TWO_PARENS = /([)])([(])/;
-  var LETTER_PAREN = /([A-Za-z0-9])([(])|([)])([0-9A-Za-z])/;
-  var TWO_LETTERS = /([A-Za-z)])([(A-Za-z])/;
+  var LETTER_PAREN = /([0-9xy])([(])|([)])([0-9xy])/;
+  var TWO_LETTERS = /([xy])([xy])/;
   var REGEXES = [TWO_LETTERS, TWO_PARENS, LETTER_PAREN];
   // This is the jquery/jcanvas wrapped canvas, which is used for everything except
   // setting the height and width because it's almost impossible to do with jquery
