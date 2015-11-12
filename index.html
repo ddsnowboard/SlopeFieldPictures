@@ -1,13 +1,13 @@
 <html>
-
 <head>
   <link rel="stylesheet" type="text/css" href="style.css" />
+  <link rel="stylesheet" type="text/css" href="buttons.css" />
   <link href='http://fonts.googleapis.com/css?family=Open+Sans&subset=latin,latin-ext,greek' rel='stylesheet' type='text/css' />
   <script type="text/javascript" src="jquery-2.1.1.min.js"></script>
   <script type="text/javascript" src="jCanvas.min.js"></script>
   <script type="text/javascript" src="jquery.caret.js"></script>
   <script type="text/javascript" src="math.min.js"></script>
-  <script type="text/javascript" src="master.js"></script>
+  <!--<script type="text/javascript" src="master.js"></script> -->
   <script type="text/javascript" src="main.js"></script>
   <title>Slope Field Generator</title>
 
@@ -26,7 +26,7 @@
       </tr>
       <tr>
         <td>
-          <div id="draw" class="button">Draw</div>
+          <div id="draw"  class="button button-3d button-caution">Draw</div>
         </td>
       </tr>
       <tr>
@@ -36,31 +36,34 @@
           </tr>
           <tr>
             <td>
-              <div class="button preset">-2x/y</div>
+              <div class="button button-block  button-primary preset">-2x/y</div>
             </td>
             <td>
-              <div class="button preset">2(xy)^2+5(xy)+2</div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <div class="button preset">(2x^2-5x+4)(-2y+2)</div>
-            </td>
-            <td>
-              <div class="button preset">.1((2x^2-2x+2)(2y^2-6y+2))</div>
+              <div class="button button-block  button-primary preset">2(xy)^2+5(xy)+2</div>
             </td>
           </tr>
           <tr>
             <td>
-              <div class="button preset">y^2/x</div>
+              <div class="button button-block  button-primary preset">(2x^2-5x+4)(-2y+2)</div>
             </td>
             <td>
-              <div class="button preset">x^2/y</div>
+              <div class="button button-block  button-primary preset">.1((2x^2-2x+2)(2y^2-6y+2))</div>
             </td>
           </tr>
           <tr>
             <td>
-              <div class="button preset">(6x^2-3x+11)/(y^4-4y^3+y^2-y+3)</div>
+              <div class="button button-block  button-primary preset">y^2/x</div>
+            </td>
+            <td>
+              <div class="button button-block  button-primary preset">x^2/y</div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="button button-block  button-primary preset">(6x^2-3x+11)/(y^4-4y^3+y^2-y+3)</div>
+            </td>
+            <td>
+              <div class="button button-block  button-primary preset">distance([x, y], [100,0])/tan(x/100)</div>
             </td>
           </tr>
         </table>
